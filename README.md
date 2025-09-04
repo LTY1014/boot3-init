@@ -317,6 +317,7 @@ logging:
   # 输出级别
   level:
     root: info
+    com.lty.mapper: DEBUG  # 替换为实际的mapper包路径
   file:
     # 指定路径
     path: logs

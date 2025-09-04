@@ -5,16 +5,20 @@
 <mapper namespace="com.lty.mapper.BookMapper">
 
     <resultMap id="BaseResultMap" type="com.lty.model.entity.Book">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="bookName" column="bookName" jdbcType="VARCHAR"/>
-            <result property="author" column="author" jdbcType="VARCHAR"/>
-            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
-            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="bookName" column="bookName" jdbcType="VARCHAR"/>
+        <result property="type" column="author" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,bookName,author,
-        createTime,updateTime,isDelete
+        t.id,
+        t.bookName,
+        t.type,
+        t.createTime,
+        t.updateTime
     </sql>
 </mapper>
