@@ -41,6 +41,16 @@ public class UserVO implements Serializable {
     private String userRole;
 
     /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 状态 0 - 正常
+     */
+    private Integer userStatus;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;
