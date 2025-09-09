@@ -37,7 +37,7 @@
 
 > PS：可以直接查找TODO，根据提示使用
 >
-> 正式业务开发可以删除`IndexController`和`Book`表相关服务
+> 正式业务开发可以删除`Book`表相关服务
 
 TODO
 
