@@ -46,6 +46,11 @@ public class UserVO implements Serializable {
     private String email;
 
     /**
+     * 电话
+     */
+    private String phone;
+
+    /**
      * 状态 0 - 正常
      */
     private Integer userStatus;
