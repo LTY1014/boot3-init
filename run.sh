@@ -12,7 +12,7 @@ mvn package
 # 停止旧进程
 PID=`ps -ef|grep $jarName |grep -v grep|awk '{print $2}' `
 if [ -n "$PID" ]; then
-    kill -9 $PID
+    kill -15 $PID
     echo "结束$PID进程"
 fi
 

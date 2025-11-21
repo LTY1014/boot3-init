@@ -2,6 +2,7 @@ server:
   port: 8100
   servlet:
     context-path: /
+  shutdown: graceful  # 开启优雅关机
 
 spring:
   application:
@@ -17,8 +18,38 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+    # HikariCP 连接池配置（核心）
+    hikari:
+      # 最小空闲连接数（建议：CPU核心数*2）
+      minimum-idle: 10
+      # 最大连接数（关键！需根据业务压测调整，建议：CPU核心数*4 + 预留）
+      maximum-pool-size: 50
+      # 连接超时时间（获取连接的等待时间，建议30秒）
+      connection-timeout: 30000
+      # 空闲连接超时时间（释放空闲连接，建议10分钟）
+      idle-timeout: 600000
+      # 连接最大存活时间（避免长时间占用连接，建议30分钟）
+      max-lifetime: 1800000
+      # 检测泄露
+      leak-detection-threshold: 60000
+      # 连接池初始化失败是否抛异常
+      initialization-fail-timeout: 1
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+  lifecycle:
+    timeout-per-shutdown-phase: 30s  # 等待时间（默认30秒）
+  servlet:
+    multipart:
+      # 限制单个上传文件的最大大小
+      max-file-size: -1
+      # 限制一次请求上传文件的总大小
+      max-request-size: -1
+      # 设置文件写入磁盘的阈值大小
+      file-size-threshold: 5KB
+      # 文件上传临时目录
+      location: /tmp
+      # 控制是否延迟解析multipart请求
+      resolve-lazily: false
 
 mybatis-plus:
   #mapper路径
