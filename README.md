@@ -35,18 +35,31 @@
 
 ## 快速上手
 
-> PS：可以直接查找TODO，根据提示使用
->
-> 正式业务开发可以删除`Book`表相关服务
+> 正式业务开发可以删除 `Book` 表相关服务（示例 CRUD）
 
-TODO
+### 1. 准备环境
+- JDK：17+
+- MySQL：5.7+
 
-- [ ] application配置文件根据TODO修改
-- [ ] 根据sql文件生成数据库
+### 2. 初始化数据库
+1) 创建库（示例：`boot3_init`，字符集建议 `utf8mb4`）
+2) 执行项目提供的 SQL（请在此处补充 SQL 文件路径，例如：`/sql/init.sql`）
+
+### 3. 修改配置（必须项）
+> 以下是“配置项清单表”，也可以找TODO提示
+| 配置项 | 文件 | 说明 | 示例 |
+| --- | --- | --- | --- |
+| spring.application.name | application.yml | 项目名称   | boot3-init |
+| spring.datasource.url | application.yml | 数据库连接 | jdbc:mysql://127.0.0.1:3306/boot3_init |
+| spring.datasource.username | application.yml | 用户名 | root |
+| spring.datasource.password | application.yml | 密码 | ****** |
+| server.port | application.yml | 端口 | 8100 |
 
 
 
-- 项目启动后访问接口文档
+### 4. 启动与验证
+
+- 启动应用后访问接口文档：
 
 | 说明    | 地址                                        |
 | ------- | ------------------------------------------- |
@@ -56,11 +69,16 @@ TODO
 
 
 
+> 生产环境注意事项
+>
+> - 生产环境建议默认关闭 Swagger/Knife4j，或仅内网访问 + Basic 认证
+> - 敏感配置（DB 密码、文档密码）不要提交到 git，建议通过环境变量/外部配置注入
+
 ### 使用说明
 
 默认表结构：user+book
 
-数据库+后端 `全部是驼峰命名！！！` 
+数据库+后端 `全部是驼峰命名！！！`
 
 主键默认都是自增
 
@@ -69,8 +87,6 @@ TODO
 生成新表可参考book表设计完成(根据项目需要，可不实现DTO和VO)
 
 打成Jar包体积约45M
-
-
 
 
 
@@ -234,48 +250,6 @@ request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, user);
 
 
 
-## 增删改查
-
-> 项目以book表作为CRUD增删改查实现参考
->
-> 注意：请求最好实现序列化接口：public class PageRequest implements Serializable
-
-
-
-建表语句
-
-```
-create table book
-(
-    id         bigint auto_increment comment 'id'
-        primary key,
-    bookName   varchar(256)                       null comment '书名称',
-    author     varchar(256)                       null comment '作者',
-    createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
-    updateTime datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
-    isDelete   tinyint  default 0                 not null comment '是否删除'
-)
-    comment '书';
-```
-
-
-
-### 开发流程
-
-1.编写表结构
-
-2.插件(mybatis-X)生成对应分层文件
-
-3.文件拷贝(注意加TableLogic及修改文件路径)
-
-4.添加验证规则
-
-5.请求、查询、修改的各请求标识
-
-6.替换变量(注意大小写)
-
-
-
 
 
 ## 一键部署
@@ -308,7 +282,7 @@ knife4j:
   basic:
     enable: true
     # Basic认证用户名
-    username: lty
+    username: boot
     # Basic认证密码
     password: 123456
  
