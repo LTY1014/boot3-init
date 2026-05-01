@@ -12,12 +12,12 @@ mvn package
 # 停止旧进程
 PID=`ps -ef|grep $jarName |grep -v grep|awk '{print $2}' `
 if [ -n "$PID" ]; then
-    kill -15 $PID
+    kill -9 $PID
     echo "结束$PID进程"
 fi
 
 # 启动新进程
 cd target
-nohup java -jar $jarName > $logFile 2>&1 &
+nohup java -Xms512m -Xmx512m -jar $jarName > $logFile 2>&1 &
 
 tail -f ./$logFile
