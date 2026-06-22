@@ -1,6 +1,5 @@
 package com.lty.aop;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.lty.annotation.AuthCheck;
 import com.lty.common.ErrorCode;
 import com.lty.exception.BusinessException;
@@ -13,6 +12,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -45,7 +45,7 @@ public class AuthInterceptor {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
         // 拥有任意权限即通过
-        if (CollectionUtils.isNotEmpty(anyRole)) {
+        if (!CollectionUtils.isEmpty(anyRole)) {
             String userRole = user.getUserRole();
             if (!anyRole.contains(userRole)) {
                 throw new BusinessException(ErrorCode.NO_AUTH_ERROR);

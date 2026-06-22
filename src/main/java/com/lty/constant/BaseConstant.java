@@ -1,6 +1,7 @@
 package com.lty.constant;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 
 /**
  * 通用常量
@@ -29,17 +30,12 @@ public interface BaseConstant {
     byte[] AES_KEY = "123456789abcdefg".getBytes(StandardCharsets.UTF_8);
 
     /**
-     * linux系统分隔符
-     */
-    String SEPARATOR_SPRIT = "/";
-    /**
-     * win系统分隔符
-     */
-    String SEPARATOR_BACKSLASH = "\\\\";
-
-    /**
      * 获取项目根目录
      */
-    String PROJECT_ROOT_DIRECTORY = System.getProperty("user.dir")
-            .replaceAll("\\\\", SEPARATOR_SPRIT);
+    String PROJECT_ROOT_DIRECTORY = Paths.get(System.getProperty("user.dir")).toString();
+
+    /**
+     * 获取系统临时文件路径
+     */
+    String TEMP_DIRECTORY = Paths.get(System.getProperty("java.io.tmpdir")).toString();
 }

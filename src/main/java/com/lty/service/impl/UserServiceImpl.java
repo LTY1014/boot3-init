@@ -88,6 +88,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         HttpServletRequest request = ServletUtil.getRequest();
         // 获取用户时再从数据库加载
         Long userId = (Long) request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
+        if (userId == null) {
+            return null;
+        }
         User currentUser = this.getById(userId);
         if (currentUser == null) {
             return null;
