@@ -1,17 +1,17 @@
-package com.lty.model.dto.book;
+package com.lty.business.model.dto;
 
-import com.lty.common.PageRequest;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * @author lty
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class BookQueryRequest extends PageRequest {
+public class BookUpdateRequest implements Serializable {
+
+    private long id;
 
     private String bookName;
 

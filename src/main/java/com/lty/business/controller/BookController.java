@@ -1,4 +1,4 @@
-package com.lty.controller;
+package com.lty.business.controller;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -9,8 +9,8 @@ import com.lty.common.IdRequest;
 import com.lty.common.PageRequest;
 import com.lty.common.ResultUtils;
 import com.lty.exception.BusinessException;
-import com.lty.mapper.BookMapper;
-import com.lty.model.entity.Book;
+import com.lty.business.mapper.BookMapper;
+import com.lty.business.model.entity.Book;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;

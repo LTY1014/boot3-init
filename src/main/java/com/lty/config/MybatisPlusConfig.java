@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @author lty
  */
 @Configuration
-@MapperScan({"com.lty.mapper"})
+@MapperScan({"com.lty.mapper", "com.lty.*.mapper"})
 public class MybatisPlusConfig {
     /**
      * 拦截器设置

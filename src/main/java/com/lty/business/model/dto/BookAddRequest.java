@@ -1,4 +1,4 @@
-package com.lty.model.dto.book;
+package com.lty.business.model.dto;
 
 import lombok.Data;
 

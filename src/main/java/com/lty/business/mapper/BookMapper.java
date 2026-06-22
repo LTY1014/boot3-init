@@ -1,6 +1,6 @@
-package com.lty.mapper;
+package com.lty.business.mapper;
 
-import com.lty.model.entity.Book;
+import com.lty.business.model.entity.Book;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
