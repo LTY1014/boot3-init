@@ -48,6 +48,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             // 设置默认密码
             userPassword = UserConstant.DEFAULT_PASSWORD;
         }
+        userAddRequest.setUserRole(UserConstant.DEFAULT_ROLE);  // 设置默认角色
         return addUserValid(userAddRequest, userAccount, userPassword);
     }
 
@@ -55,26 +56,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User userLogin(UserLoginRequest userLoginRequest) {
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
-        if (StringUtils.isAnyBlank(userAccount, userPassword)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
-        }
-        if (userAccount.length() < UserConstant.ACCOUNT_LENGTH) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号错误");
-        }
-        if (userPassword.length() < UserConstant.PASSWORD_LENGTH) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误");
+        if (userAccount.length() < UserConstant.ACCOUNT_LENGTH || userPassword.length() < UserConstant.PASSWORD_LENGTH) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号或密码错误");
         }
         // 查询用户是否存在
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userAccount", userAccount);
         User user = userMapper.selectOne(queryWrapper);
         // 用户不存在
-        if (user == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
+        if (user == null || !PasswordUtil.isValidPassword(userPassword, user.getUserPassword())) {
+            log.info("user login failed, userAccount cannot match userPassword: {}", userAccount);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在或密码错误");
         }
-        if (!PasswordUtil.isValidPassword(userPassword, user.getUserPassword())) {
-            log.info("user login failed, userAccount cannot match userPassword");
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码错误");
+        if (user.getUserStatus() != 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户已禁用");
         }
         // 3. 记录用户的登录态
         HttpServletRequest request = ServletUtil.getRequest();
@@ -92,7 +87,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return null;
         }
         User currentUser = this.getById(userId);
-        if (currentUser == null) {
+        if (currentUser == null || currentUser.getUserStatus() != 0) {
             return null;
         }
         return currentUser;
@@ -197,27 +192,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     public Long addUserValid(UserAddRequest request, String userAccount, String userPassword) {
-        synchronized (userAccount.intern()) {
-            // 账户不能重复
-            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("userAccount", userAccount);
-            long count = userMapper.selectCount(queryWrapper);
-            if (count > 0) {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号重复");
-            }
-            // 2. 加密
-            String encryptPassword = PasswordUtil.encodePassword(userPassword);
-            // 3. 插入数据
-            User user = new User();
-            BeanUtils.copyProperties(request, user);
-            user.setUserPassword(encryptPassword);
+        // 1. 加密
+        String encryptPassword = PasswordUtil.encodePassword(userPassword);
+
+        // 2. 直接插入，让数据库保证唯一性
+        User user = new User();
+        user.setUserAccount(request.getUserAccount());
+        user.setUserRole(request.getUserRole());
+        user.setUserName(request.getUserName());
+        user.setAvatarUrl(request.getAvatarUrl());
+        user.setGender(request.getGender());
+        user.setPhone(request.getPhone());
+        user.setEmail(request.getEmail());
+        user.setUserPassword(encryptPassword);
+        try {
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
             }
-            return user.getId();
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号重复");
         }
+        return user.getId();
     }
+
 }
 
 

@@ -100,10 +100,14 @@ public class UserController {
         if (!(loginUser.getId().equals(userUpdateRequest.getId()) || loginUser.getUserRole().equals(UserConstant.ADMIN_ROLE))) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
+        if (!UserConstant.ADMIN_ROLE.equals(loginUser.getUserRole())) {
+            userUpdateRequest.setUserRole(null);
+        }
         boolean result = userService.updateUser(userUpdateRequest);
         return ResultUtils.success(result);
     }
 
+    @AuthCheck(mustRole = "admin")
     @Operation(summary = "id获取")
     @GetMapping("/get")
     public BaseResponse<UserVO> getById(long id) {
@@ -163,6 +167,7 @@ public class UserController {
         return ResultUtils.success(userVOPage);
     }
 
+    @AuthCheck(mustRole = "admin")
     @Operation(summary = "用户删除")
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteUser(@RequestBody IdRequest deleteRequest) {

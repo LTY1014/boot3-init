@@ -1,21 +1,21 @@
-create table user
+CREATE TABLE user
 (
     id           bigint auto_increment comment 'id'
-        primary key,
-    userAccount  varchar(256)                           null comment '账号',
-    userPassword varchar(512)                           not null comment '密码',
-    userRole     varchar(256) default 'user'            not null comment '用户角色 user-普通用户 admin-管理员',
-    userName     varchar(256)                           null comment '用户昵称',
-    avatarUrl    varchar(1024)                          null comment '用户头像',
-    gender       tinyint      default 1                 null comment '性别',
-    phone        varchar(128)                           null comment '电话',
-    email        varchar(512)                           null comment '邮箱',
-    userStatus   tinyint          default 0                 not null comment '状态 0-正常',
-    createTime   datetime     default CURRENT_TIMESTAMP null comment '创建时间',
-    updateTime   datetime     default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
-    isDelete     tinyint      default 0                 not null comment '是否删除'
-)
-    comment '用户';
+        PRIMARY KEY,
+    userAccount  varchar(256)                NOT NULL comment '账号',
+    userPassword varchar(512)                NOT NULL comment '密码',
+    userRole     varchar(256) DEFAULT 'user' NOT NULL comment '用户角色 user-普通用户 admin-管理员',
+    userName     varchar(256) NULL comment '用户昵称',
+    avatarUrl    varchar(1024) NULL comment '用户头像',
+    gender       tinyint      DEFAULT 1 NULL comment '性别',
+    phone        varchar(128) NULL comment '电话',
+    email        varchar(512) NULL comment '邮箱',
+    userStatus   tinyint      DEFAULT 0      NOT NULL comment '状态 0-正常',
+    createTime   datetime     DEFAULT CURRENT_TIMESTAMP NULL comment '创建时间',
+    updateTime   datetime     DEFAULT CURRENT_TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
+    isDelete     tinyint      DEFAULT 0      NOT NULL comment '是否删除',
+    UNIQUE KEY uk_user_account (userAccount)
+) comment '用户';
 
 INSERT INTO user (id, userAccount, userPassword, userRole, userName, avatarUrl, gender, phone, email, userStatus, createTime, updateTime, isDelete) VALUES (1, 'admin', 'b3ebf87507a91957e56dab68b43356b8', 'admin', '管理员', 'http://niu.liangtianyu.space/user.png', 1, null, null, 0, '2023-03-19 09:12:41', '2023-06-04 19:00:36', 0);
 INSERT INTO user (id, userAccount, userPassword, userRole, userName, avatarUrl, gender, phone, email, userStatus, createTime, updateTime, isDelete) VALUES (2, 'test', 'b3ebf87507a91957e56dab68b43356b8', 'user', '测试账户', 'http://niu.liangtianyu.space/user.png', 0, null, null, 0, '2023-03-19 09:13:05', '2023-06-27 14:13:34', 0);
