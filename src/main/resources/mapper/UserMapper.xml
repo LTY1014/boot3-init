@@ -29,7 +29,7 @@
 
     <sql id="Base_Column_List">
         id,userAccount,userPassword,
-        userRole,username,avatarUrl,
+        userRole,userName,avatarUrl,
         gender,phone,email,
         userStatus,createTime,updateTime,
         isDelete

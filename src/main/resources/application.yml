@@ -2,15 +2,22 @@ server:
   port: 8100
   servlet:
     context-path: /
+    session:
+      # 会话超时（Duration格式，支持：30m、1h、1d 等）
+      timeout: 1d
+      cookie:
+        # 仅 HTTP 访问，禁止 JS 读取 document.cookie
+        http-only: true
+        # HTTPS 环境下应设为 true
+        secure: false
+        # 跨站防护：Lax（默认，允许部分GET跨站）/ Strict / None
+        same-site: Lax
 
 spring:
   application:
     # TODO 修改名称
     name: boot3-init
     version: 1.0.0
-  session:
-    # 生效时间为一天
-    timeout: 86400
   # TODO 修改数据库
   datasource:
     url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
@@ -70,6 +77,16 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #    log-impl: ''
 
+knife4j:
+  enable: true
+  # 开启Swagger的Basic认证功能,默认是false
+#  basic:
+#    enable: true
+#    # Basic认证用户名
+#    username: admin
+#    # Basic认证密码
+#    password: 123456
+
 #logging:
 #  # 输出级别
 #  level:
@@ -84,13 +101,3 @@ mybatis-plus:
 #      max-history: 7
 #      # 每个文件最大大小
 #      max-file-size: 5MB
-
-knife4j:
-  enable: true
-  # 开启Swagger的Basic认证功能,默认是false
-#  basic:
-#    enable: true
-#    # Basic认证用户名
-#    username: admin
-#    # Basic认证密码
-#    password: 123456

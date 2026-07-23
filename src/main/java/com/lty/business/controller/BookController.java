@@ -41,10 +41,10 @@ public class BookController {
         Book book = new Book();
         BeanUtils.copyProperties(bookAddRequest, book);
         int newId = bookMapper.insert(book);
-        if (newId <= 0) {
+        if (!(newId > 0)) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
-        return ResultUtils.success((long) newId);
+        return ResultUtils.success(book.getId());
     }
 
     @PostMapping("/update")

@@ -7,7 +7,7 @@ logFile=1.out
 
 # 拉取代码 构建项目
 git pull
-mvn package
+mvn clean package -DskipTests
          
 # 停止旧进程
 PID=`ps -ef|grep $jarName |grep -v grep|awk '{print $2}' `
