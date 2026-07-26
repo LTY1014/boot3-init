@@ -17,8 +17,8 @@ CREATE TABLE user
     UNIQUE KEY uk_user_account (userAccount)
 ) comment '用户';
 
-INSERT INTO user (id, userAccount, userPassword, userRole, userName, avatarUrl, gender, phone, email, userStatus, createTime, updateTime, isDelete) VALUES (1, 'admin', 'b3ebf87507a91957e56dab68b43356b8', 'admin', '管理员', 'http://niu.liangtianyu.space/user.png', 1, null, null, 0, '2023-03-19 09:12:41', '2023-06-04 19:00:36', 0);
-INSERT INTO user (id, userAccount, userPassword, userRole, userName, avatarUrl, gender, phone, email, userStatus, createTime, updateTime, isDelete) VALUES (2, 'test', 'b3ebf87507a91957e56dab68b43356b8', 'user', '测试账户', 'http://niu.liangtianyu.space/user.png', 0, null, null, 0, '2023-03-19 09:13:05', '2023-06-27 14:13:34', 0);
+INSERT INTO user (id, userAccount, userPassword, userRole, userName, avatarUrl, gender, phone, email, userStatus, createTime, updateTime, isDelete) VALUES (1, 'admin', 'b3ebf87507a91957e56dab68b43356b8', 'admin', '管理员', null, 1, null, null, 0, '2023-03-19 09:12:41', '2023-06-04 19:00:36', 0);
+INSERT INTO user (id, userAccount, userPassword, userRole, userName, avatarUrl, gender, phone, email, userStatus, createTime, updateTime, isDelete) VALUES (2, 'test', 'b3ebf87507a91957e56dab68b43356b8', 'user', '测试账户', null, 0, null, null, 0, '2023-03-19 09:13:05', '2023-06-27 14:13:34', 0);
 
 create table book
 (
