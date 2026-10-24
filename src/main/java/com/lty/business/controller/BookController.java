@@ -1,18 +1,19 @@
 package com.lty.business.controller;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lty.business.mapper.BookMapper;
+import com.lty.business.model.dto.BookQueryRequest;
+import com.lty.business.model.entity.Book;
 import com.lty.common.BaseResponse;
 import com.lty.common.ErrorCode;
 import com.lty.common.IdRequest;
-import com.lty.common.PageRequest;
 import com.lty.common.ResultUtils;
 import com.lty.exception.BusinessException;
-import com.lty.business.mapper.BookMapper;
-import com.lty.business.model.entity.Book;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,7 +81,7 @@ public class BookController {
     }
 
     @PostMapping(value = "/list/page")
-    public BaseResponse<Page<Book>> listBookByPage(@RequestBody PageRequest request) {
+    public BaseResponse<Page<Book>> listBookByPage(@RequestBody BookQueryRequest request) {
         // 分页基本字段
         long current = request.getCurrent();
         long size = request.getPageSize();
@@ -89,7 +90,9 @@ public class BookController {
             throw new BusinessException(ErrorCode.OPERATION_ERROR, "查询数量过多");
         }
         Page<Book> page = new Page<>(current, size);
-        Page<Book> bookPage = bookMapper.selectPage(page, null);
+        Book book = new Book();
+        BeanUtils.copyProperties(request, book);
+        Page<Book> bookPage = bookMapper.selectPage(page, buildQueryWrapper(book));
         return ResultUtils.success(bookPage);
     }
 
@@ -104,9 +107,14 @@ public class BookController {
     }
 
     public Wrapper<Book> buildQueryWrapper(Book book) {
-        QueryWrapper<Book> qw = new QueryWrapper<>();
+        LambdaQueryWrapper<Book> qw = new LambdaQueryWrapper<>();
         // TODO 添加查询条件
-
+        if (book != null) {
+            qw.eq(book.getId() != null, Book::getId, book.getId());
+            qw.eq(StringUtils.isNotBlank(book.getBookName()), Book::getBookName, book.getBookName());
+            qw.eq(StringUtils.isNotBlank(book.getType()), Book::getType, book.getType());
+            qw.eq(book.getPrice() != null, Book::getPrice, book.getPrice());
+        }
         return qw;
     }
 }

@@ -47,8 +47,10 @@
 
 > `application.yml` 默认连接 `localhost:3306/demo`。如使用其他库名或连接信息，请同步修改数据源配置。
 
-### 3. 修改配置（必须项）
+### 3. 修改配置
 > 以下是“配置项清单表”，也可以找TODO提示
+1）`application.yml` 常用配置项
+
 | 配置项 | 文件 | 说明 | 示例 |
 | --- | --- | --- | --- |
 | spring.application.name | application.yml | 项目名称   | boot3-init |
@@ -56,6 +58,26 @@
 | spring.datasource.username | application.yml | 用户名 | root |
 | spring.datasource.password | application.yml | 密码 | 123456（请按本机环境修改） |
 | server.port | application.yml | 端口 | 8100 |
+| 接口文档 | `knife4j.enable` | `true` | 是否开启 Knife4j 增强模式 |
+| 接口文档 | `knife4j.basic.enable` | 默认注释（`false`） | 开启后访问接口文档需输入 `username` / `password` 进行 Basic 认证 |
+| 日志配置 | `logging.file.path` | 默认注释（`logs`） | 取消注释后可将日志输出到指定目录，并按 `max-history: 7`（天）、`max-file-size: 5MB` 滚动归档 |
+|  |  |  |  |
+
+2）代码配置类与常量说明
+
+| 位置 | 关键配置 / 常量 | 默认值 / 规则 | 说明 |
+| --- | --- | --- | --- |
+| `config/AppConfig.java` | `LocalDateTime` 格式化 | `yyyy-MM-dd HH:mm:ss` | 统一 Jackson 对 `LocalDateTime` 的序列化与反序列化格式 |
+| `config/CorsConfig.java` | 全局跨域与资源映射 | `allowedOriginPatterns("*")`、`allowCredentials(true)` | 允许跨域携带 Cookie，映射 `/doc.html` 与 `/static/` 静态资源，并将非静态路径转发至 `/` |
+| `config/Knife4jConfig.java` | `OpenAPI` 文档信息 | 标题 `API Document`、版本 `1.0` | 自定义 Swagger/Knife4j 文档标题、描述、版本号及作者联系信息 |
+| `config/MybatisPlusConfig.java` | `@MapperScan` 与分页插件 | `com.lty.mapper`, `com.lty.*.mapper` | 扫描系统及 `business` 业务包下的 Mapper，并配置 MySQL 分页拦截器 |
+| `constant/UserConstant.java` | `SALT` / `DEFAULT_PASSWORD` | `"salt"` / `"123456"` | 密码 MD5 加密固定盐值（新项目上线前建议修改）与新增/重置用户的默认密码 |
+| `constant/UserConstant.java` | `ACCOUNT_LENGTH` / `PASSWORD_LENGTH` | `4` / `6` | 用户账号最小长度（4 位）与密码最小长度（6 位）校验阈值 |
+| `constant/UserConstant.java` | `USER_LOGIN_STATE` | `"userLoginState"` | Session 中存储当前登录用户 ID 的键名 |
+| `constant/BaseConstant.java` | `PAGE_LIMIT` | `50` | 通用分页查询单页最大条数限制 |
+| `constant/BaseConstant.java` | `AES_KEY` | `"123456789abcdefg"` | 16 位 AES 密钥常量（如启用敏感数据加解密请替换） |
+| `aop/LogInterceptor.java` | `SENSITIVE_KEYS` / `MAX_PARAM_LOG_LENGTH` | 密码类字段 / `2000` | 请求日志自动脱敏的字段名列表及参数日志最大截断长度 |
+| `pom.xml` / `run.sh` | `finalName` / `jarName` / JVM 参数 | `boot3-init.jar` / `-Xms512m -Xmx512m` | 修改项目名后需同步调整 `run.sh` 中的 `jarName`，并按服务器规格调整 JVM 内存参数 |
 
 
 
